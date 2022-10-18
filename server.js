@@ -31,14 +31,27 @@ function filterByQuery(query, animalsArray){
     return filteredResults;
 }
 
+function findByID(id,animalsArray) {
+    const result =animalsArray.filter(animal=> animal.id===id)[0];
+    return result;
+}
+
 app.get('/api/animals',(req,res) =>{
     let results=animals;
     if(req.query) {
         results=filterByQuery(req.query, results);
     }
-    // console.log(req.query)
-    res.json(results);
+    if (results) {
+        res.json(results);
+    } else {
+        res.send(404);
+    }
 })
+
+app.get('/api/animals/:id',(req,res)=>{
+    const result = findByID(req.params.id,animals);
+        res.json(result);
+});
 
 app.listen(PORT,()=>{
     console.log(`API server now on port ${PORT}!`);

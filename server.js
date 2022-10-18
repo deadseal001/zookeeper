@@ -41,16 +41,18 @@ app.get('/api/animals',(req,res) =>{
     if(req.query) {
         results=filterByQuery(req.query, results);
     }
-    if (results) {
+
         res.json(results);
-    } else {
-        res.send(404);
-    }
+
 })
 
 app.get('/api/animals/:id',(req,res)=>{
     const result = findByID(req.params.id,animals);
+    if (result) {
         res.json(result);
+    } else {
+        res.send(404);
+    }
 });
 
 app.listen(PORT,()=>{

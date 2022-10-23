@@ -13,50 +13,9 @@ app.use(express.json());
 
 app.use(express.static('public'));//provide a path to a locatin in our application
 
-function filterByQuery(query, animalsArray){
-    let personalityTraitsArray=[];
-    let filteredResults = animalsArray;
-    if(query.personalityTraits){
-        if(typeof query.personalityTraits==='string') {
-            personalityTraitsArray=[query.personalityTraits];
-        } else {
-            personalityTraitsArray=query.personalityTraits;
-        }
 
-        personalityTraitsArray.forEach(trait=>{
-            filteredResults=filteredResults.filter(
-                animal => animal.personalityTraits.indexOf(trait)!=-1
-            );
-        });
-    }
-    if(query.diet) {
-        filteredResults = filteredResults.filter(animal => animal.diet === query.diet);
-    }
-    if(query.species){
-        filteredResults = filteredResults.filter(animal => animal.species ===query.species);
-    }
-    if(query.name){
-        filteredResults = filteredResults.filter(animal => animal.name ===query.name);
-    }
-    return filteredResults;
-}
 
-function findByID(id,animalsArray) {
-    const result =animalsArray.filter(animal=> animal.id===id)[0];
-    return result;
-}
 
-function createNewAnimal(body,animalsArray){
-    const animal= body;
-     animalsArray.push(animal);
-    //our function's main code will go here!
-    fs.writeFileSync(
-        path.join(__dirname,'/data/animals.json'),
-        JSON.stringify({animals:animalsArray},null,2)
-    );
-    //return finished code to post rout for response
-    return animal;
-}
 
 function validateAnimal(animal){
     if(!animal.name || typeof animal.name !=='string') {

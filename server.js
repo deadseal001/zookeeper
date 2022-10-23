@@ -4,11 +4,14 @@ const app = express();
 const {animals} = require('./data/animals.json');
 const fs=require('fs');
 const path = require('path');
+const { get } = require('http');
 
 //parse incoming string or array data
 app.use(express.urlencoded({ extended:true}));
 //parse incoming JSON data
 app.use(express.json());
+
+app.use(express.static('public'));//provide a path to a locatin in our application
 
 function filterByQuery(query, animalsArray){
     let personalityTraitsArray=[];
@@ -71,6 +74,17 @@ function validateAnimal(animal){
     return true;
 }
 
+app.get('/',(req,res)=>{
+    res.sendFile(path.join(__dirname,'./public/index.html'));
+});
+
+app.get('/animals',(req,res)=>{
+    res.sendFile(path.join(__dirname,'./public/animals.html'));
+});
+
+app.get('/zookeepers',(req,res)=>{
+    res.sendFile(path.join(__dirname,'./public/zookeepers.html'));
+});
 
 app.get('/api/animals',(req,res) =>{
     console.log(req);
@@ -78,7 +92,6 @@ app.get('/api/animals',(req,res) =>{
     if(req.query) {
         results=filterByQuery(req.query, results);
     }
-
         res.json(results);
 
 })
@@ -92,6 +105,9 @@ app.get('/api/animals/:id',(req,res)=>{
     }
 });
 
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'./public/index.html'));
+});
 
 app.post('/api/animals',(req,res)=>{
     //set id based on what the next index of the array will be

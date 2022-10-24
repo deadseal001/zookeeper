@@ -127,6 +127,15 @@
         "loving"
       ],
       "id": "12"
+    },
+    {
+      "name": "Sam",
+      "species": "seal",
+      "diet": "carnivore",
+      "personalityTraits": [
+        "anxious"
+      ],
+      "id": "13"
     }
   ]
 }
